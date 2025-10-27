@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UploadService } from './upload.service';
 
 @Component({
   selector: 'app-upload',
@@ -7,6 +8,9 @@ import { Component } from '@angular/core';
 })
 export class UploadComponent {
   selectedFile: File | null = null;
+  fileInput: any;
+
+  constructor(private uploadService: UploadService) {}
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -19,9 +23,22 @@ export class UploadComponent {
 
   onUpload(): void {
     if (this.selectedFile) {
-      // Here you would handle the upload logic, e.g., send to a backend
-      alert(`File '${this.selectedFile.name}' uploaded!`);
-      this.selectedFile = null;
+      this.uploadService.uploadFile(this.selectedFile).subscribe({
+        next: () => {
+          
+          alert(`File '${this.selectedFile!.name}' uploaded!`);
+         // this.selectedFile.name = null;
+          this.selectedFile = null;
+          this.fileInput.value = '';
+          console.log(this.selectedFile);
+        },
+        error: (err) => {
+          this.selectedFile = null;
+          console.log(err);
+          throw new Error(err);
+        //  alert('Upload failed.');
+        }
+      });
     }
   }
 }

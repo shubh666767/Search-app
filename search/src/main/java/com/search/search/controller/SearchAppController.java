@@ -1,9 +1,8 @@
 package com.search.search.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.codec.multipart.FilePart;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -21,4 +20,14 @@ public class SearchAppController {
         public String getQuery() { return query; }
         public void setQuery(String query) { this.query = query; }
     }
+
+
+    @PostMapping("/upload")
+    public Mono<String> upload(@RequestPart("file") Mono<FilePart> filePartMono) {
+        return filePartMono.map(filePart -> {
+            System.out.println("Received file: " + filePart.filename());
+            return "File uploaded: " + filePart.filename();
+        });
+    }
+
 }

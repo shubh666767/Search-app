@@ -2,10 +2,10 @@
   <mat-card>
     <mat-card-title>Upload Document</mat-card-title>
     <mat-card-content>
-      <input type="file" (change)="onFileSelected($event)" accept=".pdf,.doc,.docx,.txt" />
+      <input type="file" (change)="onFileSelected($event)" accept=".pdf,.doc,.docx,.txt" #fileInput />
       <div *ngIf="selectedFile" class="file-info">
         <mat-icon>description</mat-icon>
-        <span>{{ selectedFile.name }}</span>
+       <!-- <span>{{ selectedFile.name }}</span>-->
       </div>
     </mat-card-content>
     <mat-card-actions>
